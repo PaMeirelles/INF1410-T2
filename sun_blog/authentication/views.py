@@ -8,11 +8,11 @@ from django.views import View
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'auth/login.html')
+        return render(request, 'authentication/login.html')
 
 class RegisterView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'auth/register.html')
+        return render(request, 'authentication/register.html')
 
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
