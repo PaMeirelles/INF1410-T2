@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from django.urls import path, re_path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "blog_app",
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
