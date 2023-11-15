@@ -43,3 +43,4 @@ urlpatterns = [
     path("blog/", include("blog_app.urls")),
     path('api/', include('blog_app.urls')), 
 ] + urlpatterns
+
