@@ -5,10 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Post
 from .serializers import PostSerializer
+from django.views import View
+from django.shortcuts import render
 
 @authentication_classes([])
-@permission_classes([IsAuthenticated])
 class PostList(APIView):
+
     def get(self, request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
@@ -20,3 +22,7 @@ class PostList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class PostListView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'lista.html')
