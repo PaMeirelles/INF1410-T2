@@ -12,7 +12,12 @@ from django.shortcuts import render
 def home(request):
     return render(request, "blog/home.html")
 
+from django.views import View
+from django.shortcuts import render
+
+@authentication_classes([])
 class PostList(APIView):
+
     def get(self, request):
         posts = Post.objects.all()
         serializer = PostSerializer(posts, many=True)
@@ -24,3 +29,7 @@ class PostList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class PostListView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'lista.html')
