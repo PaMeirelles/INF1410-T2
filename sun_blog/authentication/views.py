@@ -2,8 +2,10 @@ from .serializers import MyTokenObtainPairSerializer, RegisterSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
 from rest_framework import generics
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .forms import LoginForm, RegisterForm
 
@@ -20,7 +22,7 @@ def sign_up(request):
             user.save()
             messages.success(request, 'You have signed up successfully.')
             login(request, user)
-            # return redirect('/blog/')
+            return redirect('/blog/home')
         else:
             return render(request, 'auth/register.html', {'form': form})
         
@@ -38,15 +40,14 @@ def sign_in(request):
             if user:
                 login(request, user)
                 messages.success(request,f'Hi {username.title()}, welcome back!')
-                # return redirect('/blog/')
+                return redirect('/blog/home')
         
-        # form is not valid or user is not authenticated
         messages.error(request,f'Invalid username or password')
         return render(request,'auth/login.html',{'form': form})
     
 def logout_view(request):
     logout(request)
-    # return redirect('/blog/')
+    return redirect('/blog/home')
 
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
