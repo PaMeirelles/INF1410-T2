@@ -41,7 +41,6 @@ urlpatterns = [
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("blog/", include("blog_app.urls")),
-    path('api/', include('blog_app.urls')), 
     path('auth/', include('authentication.urls')),
 ] + urlpatterns
 

@@ -5,9 +5,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import Post
 from .serializers import PostSerializer
+from django.shortcuts import render
 
-@authentication_classes([])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([])
+# @permission_classes([IsAuthenticated])
+def home(request):
+    return render(request, "blog/home.html")
+
 class PostList(APIView):
     def get(self, request):
         posts = Post.objects.all()
