@@ -20,12 +20,26 @@ from django.shortcuts import render
 class PostList(APIView):
     @swagger_auto_schema(
         operation_summary='Lista todos os posts',
-        operation_description="Obter informações sobre todos os carros",
+        operation_description="Obter informações sobre todos os posts",
         request_body=None,  # opcional
         responses={200: PostSerializer()}
     )
     def get(self, request):
+        '''
+        Retorna uma lista de posts
+        Depende de:
+        - APIView
+        - Post
+        - PostSerializer
+        - Response
+        :param APIView self: o próprio objeto
+        :param Request request: um objeto representando o pedido HTTP 
+        :param HTTP: não tem
+        :return: uma lista de posts em formato JSON
+        :rtype: JSON
+        '''
         posts = Post.objects.all().order_by('dt_publicado')
+        # importante informar que o queryset terá mais de 1 resultado usando many=True
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -42,6 +56,19 @@ class PostList(APIView):
         responses={201: PostSerializer(), 400: 'Dados errados'},
     )
     def post(self, request):
+        '''
+        Cria um novo post
+        Depende de:
+        - APIView
+        - Post
+        - PostSerializer
+        - Response
+        :param APIView self: o próprio objeto
+        :param Request request: um objeto representando o pedido HTTP 
+        :param HTTP: não tem
+        :return: os dados do post criado em formato JSON
+        :rtype: JSON
+        '''
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -49,8 +76,8 @@ class PostList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     @swagger_auto_schema(
-        operation_summary='Atualizar post',
-        operation_description="Atualizar um post existente",
+    operation_summary='Atualizar post',
+    operation_description="Atualizar um post existente",
         request_body=openapi.Schema(
             type=openapi.TYPE_OBJECT,
             properties={
@@ -64,6 +91,19 @@ class PostList(APIView):
         ],
     )
     def put(self, request, id_arg):
+        '''
+        Atualiza um post existente
+        Depende de:
+        - APIView
+        - Post
+        - PostSerializer
+        - Response
+        :param APIView self: o próprio objeto
+        :param Request request: um objeto representando o pedido HTTP 
+        :param int id_arg: o ID do post a ser atualizado
+        :return: os dados do post atualizado em formato JSON
+        :rtype: JSON
+        '''
         try:
             post = Post.objects.get(pk=id_arg)
         except Post.DoesNotExist:
@@ -74,7 +114,7 @@ class PostList(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     @swagger_auto_schema(
         operation_description='Remove um post',
         request_body=PostSerializer,
@@ -84,6 +124,19 @@ class PostList(APIView):
         },
     )
     def delete(self, request, id_arg):
+        '''
+        Remove um post existente
+        Depende de:
+        - APIView
+        - Post
+        - PostSerializer
+        - Response
+        :param APIView self: o próprio objeto
+        :param Request request: um objeto representando o pedido HTTP 
+        :param int id_arg: o ID do post a ser removido
+        :return: uma resposta HTTP sem conteúdo
+        :rtype: HTTPResponse
+        '''
         try:
             post = Post.objects.get(pk=id_arg)
         except Post.DoesNotExist:
