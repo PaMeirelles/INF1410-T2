@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import PostList, home
 from .views import PostListView
+from drf_yasg.utils import swagger_auto_schema
 
 app_name = "blog_app"
 

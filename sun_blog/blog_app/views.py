@@ -14,12 +14,20 @@ def home(request):
 
 from django.views import View
 from django.shortcuts import render
+from drf_yasg.utils import swagger_auto_schema
 
-@authentication_classes([])
+
+
+
 class PostList(APIView):
-
+    @swagger_auto_schema(
+        operation_summary='Lista todos os posts',
+        operation_description="Obter informações sobre todos os carros",
+        request_body=None,  # opcional
+        responses={200: PostSerializer()}
+    )
     def get(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('dt_publicado')
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
 
@@ -29,6 +37,7 @@ class PostList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     
 class PostListView(View):
     def get(self, request, *args, **kwargs):
